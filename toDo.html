@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+</head>
+
+<body onload="getToDo()">
+    <div class="container">
+        <div class="toDoForm">
+            <div class="input">
+                <input type="text" id="todo">
+                <input type="time" id="startTime">
+                <p id="erroMassege"></p>
+            </div>
+            <div class="button">
+                <button onclick="addToDo()">Add</button>
+            </div>
+        </div>
+    </div>
+    <div class="myTables">
+        <ul id="myList">
+            
+
+        </ul>
+    </div>
+</body>
+<script>
+    //declare two variables which i'm going to store my elements . and after get my elements by their Id
+    var inputText = document.getElementById("todo");
+    var inputTime = document.getElementById("startTime");
+    var myListEle = document.getElementById("myList");
+    var todos = JSON.parse(localStorage.getItem('todos'));
+    // document.write(inputText)
+
+    function addToDo() {
+        if (inputText.value && inputTime.value) {
+            todos.push({
+                todoName: inputText.value,
+                completeTime: inputTime.value,
+                completed: false
+            });
+            storeTodo(todos);
+        } else {  
+            document.getElementById("erroMassege").innerHTML = "Fill inputs are required";
+        }
+        console.log(todos)
+    }
+
+    function storeTodo(todos) {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    };
+
+    function getToDo() {
+        var x = JSON.parse(localStorage.getItem('todos'));
+
+        for(let i = 0; i < x.length; i++) {
+            myListEle.innerHTML += "<li class='list'>" + x[i].todoName + "<span class='time'>" + x[i].completeTime + "</span><input type='checkbox' id='completed'></li>";
+            document.getElementById('completed').value = x[i].completed;
+        } 
+    }
+</script>
+
+</html>
